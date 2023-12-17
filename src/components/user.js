@@ -1,7 +1,7 @@
-import { Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
-function Preview(props) {
+function User(props) {
   const data=props.data;
 
   const self={
@@ -17,10 +17,12 @@ function Preview(props) {
   }, []);
 
   return (
-    <Col className="text-center">
-      Here to show the photo preview, need a good one.
-    </Col>
+    <Container>
+      <Row>
+        <Col>Account Management</Col>
+      </Row>
+    </Container>
   );
 }
 
-export default Preview;
+export default User;

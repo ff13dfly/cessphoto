@@ -5,14 +5,10 @@ import Preview from "./preview";
 
 function Thumb(props) {
   const data=props.data;
-
-
-  const render=props.render;
-
   const self={
     click:(hash)=>{
       console.log(`Ready to get file by hash ( ${hash} ) .`);
-      render(<Preview />);
+      props.page(<Preview />,"preview");
     },
   }
 

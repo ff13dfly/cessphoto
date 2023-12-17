@@ -18,6 +18,12 @@ code {
 
 .fixedUpload{
   position: fixed;
+  left:15px;
+  bottom:15px;
+}
+
+.fixedToolbar{
+  position: fixed;
   left:0px;
   bottom:0px;
 }
