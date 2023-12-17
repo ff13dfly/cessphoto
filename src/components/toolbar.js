@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { IoIosMore } from "react-icons/io";
 
 function Toolbar(props) {
-  const data = props.data;
+  let [hidden, setHidden] = useState(true);
+  let [hideFile, setHideFile] = useState(true);
+  let [hideFolder, setHideFolder] = useState(true);
+  let [hidePreview, setHidePreview] = useState(true);
 
   const self = {
     click: () => {
@@ -14,20 +17,20 @@ function Toolbar(props) {
         case "folder":
           setHideFolder(!hideFolder);
           break;
+        case "preview":
+          setHidePreview(!hidePreview);
+          break;
         default:
           break;
       }
     },
   }
 
-  let [hidden, setHidden] = useState(true);
-  let [hideFile, setHideFile] = useState(true);
-  let [hideFolder, setHideFolder] = useState(true);
-
   useEffect(() => {
     //reset the hidden status
     setHideFile(true);
     setHideFolder(true);
+    setHidePreview(true);
 
     //check main button
     switch (props.way) {
@@ -41,7 +44,7 @@ function Toolbar(props) {
         setHidden(true);
         break;
       case "preview":
-        setHidden(true);
+        setHidden(false);
         break;
       default:
         break;
@@ -70,14 +73,22 @@ function Toolbar(props) {
         <Col hidden={hideFolder} xs={10} sm={10} md={10}>
           <Row>
             <Col xs={8} sm={8} md={8} >
-              <input type="text" className="form-control" />
+              <input type="text" className="form-control" placeholder="Folder name..."/>
             </Col>
             <Col className="text-end" xs={4} sm={4} md={4}>
-              <button className="btn btn-md btn-primary">Add</button>
+              <button className="btn btn-md btn-primary">Create</button>
             </Col>
           </Row>
         </Col>
 
+        <Col hidden={hidePreview} xs={10} sm={10} md={10}>
+          <Row>
+            <Col xs={8} sm={8} md={8} ></Col>
+            <Col className="text-end" xs={4} sm={4} md={4}>
+              <button className="btn btn-md btn-danger">Remove</button>
+            </Col>
+          </Row>
+        </Col>
       </Row>
     </Container>
   );

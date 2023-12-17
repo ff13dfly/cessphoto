@@ -1,5 +1,7 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import Overview from "./overview";
+
 
 function User(props) {
   const data=props.data;
@@ -20,6 +22,7 @@ function User(props) {
     <Container>
       <Row>
         <Col>Account Management</Col>
+        <Overview />
       </Row>
     </Container>
   );

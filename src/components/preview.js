@@ -9,10 +9,7 @@ function Preview(props) {
       console.log(`Ready to get file by hash ( ${hash} ) .`);
     },
   }
-
-  //let [list, setList] = useState([]);
-
-
+  
   useEffect(() => {
   }, []);
 

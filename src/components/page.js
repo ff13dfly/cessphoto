@@ -13,24 +13,39 @@ function Page(props) {
   let [hiddenList, setHiddenList] = useState(true);
   let [hiddenInfo, setHiddenInfo] = useState(false);
 
+  const format={
+    hash:"",        //CESS file hash
+    expire:0,       //time to expire
+    size:0,         //folder size totally
+    create:0,       //folder create time
+    update:0,       //folder update time
+  }
+
   const self = {
 
   }
 
   useEffect(() => {
     //CESS.overview();
-    setHiddenInfo(true);
-    setHiddenList(false);
-    const nlist = [
-      { hash: tools.char(10), icon: "logo512.png", update: tools.stamp() },
-      { hash: tools.char(10), icon: "logo512.png", update: tools.stamp() },
-      { hash: tools.char(10), icon: "logo512.png", update: tools.stamp() },
-      { hash: tools.char(10), icon: "logo512.png", update: tools.stamp() },
-      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-    ]
-    setList(nlist);
+    const key="cess_selected";
+    const folder=localStorage.getItem(key);
+    console.log(folder);
+    if(folder===null){
+      setInfo("No target folder selected");
+    }else{
+      setHiddenInfo(true);
+      setHiddenList(false);
+      const nlist = [
+        { hash: tools.char(10), icon: "logo512.png", update: tools.stamp() },
+        { hash: tools.char(10), icon: "logo512.png", update: tools.stamp() },
+        { hash: tools.char(10), icon: "logo512.png", update: tools.stamp() },
+        { hash: tools.char(10), icon: "logo512.png", update: tools.stamp() },
+        //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+        //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+        //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+      ]
+      setList(nlist);
+    }
   }, []);
 
   return (

@@ -12,8 +12,6 @@ function App() {
   //1.control the whole action here.
   const self={
     page:(ctx,action)=>{
-
-      //1.set content
       if(ctx==="home"){
         setContent(<Page page={self.page}/>);
         setHome(true);

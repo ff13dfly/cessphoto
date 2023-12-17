@@ -13,7 +13,7 @@ function Nav(props) {
       props.page(<User />,"user");
     },
     clickFolder:(ev)=>{
-      props.page(<Folders />,"folder");
+      props.page(<Folders  page={props.page}/>,"folder");
     },
     clickClose:(ev)=>{
       props.page("home");
@@ -24,7 +24,7 @@ function Nav(props) {
     <Navbar className="bg-body-tertiary">
       <Container>
         <Navbar.Brand href="#">
-          <h5>ChainPhoto</h5>
+          <h5>CESS Album</h5>
         </Navbar.Brand>
         <Row>
           <Col className="text-end" hidden={!props.home}>

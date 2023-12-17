@@ -9,8 +9,22 @@ function Folders(props) {
   let [hiddenList,setHiddenList]= useState(true);
   let [hiddenInfo,setHiddenInfo]= useState(false);
 
-  
+  const format={
+    hash:"",        //CESS bucket hash
+    name:"",        //Folder name
+    expire:0,       //time to expire
+    size:0,         //folder size totally
+    create:0,       //folder create time
+    update:0,       //folder update time
+  }
+
   const self={
+    clickFolder:(hash)=>{
+      //console.log(`${hash} clicked, save to localstorage`);
+      const key="cess_selected";
+      localStorage.setItem(key,hash);
+      props.page("home");
+    },
     click:(hash)=>{
       console.log(`Ready to get file by hash ( ${hash} ) .`);
     },
@@ -30,18 +44,25 @@ function Folders(props) {
   }
 
   useEffect(() => {
-    const nlist=self.getList();
+    //const nlist=self.getList();
 
-    // const nlist=[
-    //   {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
-    //   {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
-    //   {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
-    //   {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
-    //   //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-    //   //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-    //   //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-    // ]
-    // setList(nlist);
+    const nlist=[
+      {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
+      {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
+      {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
+      {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
+      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+    ]
+    if(nlist.length===0){
+
+    }else{
+      setHiddenInfo(true);
+      setHiddenList(false);
+      setList(nlist);
+    }
+    
   }, []);
 
   return (
@@ -53,7 +74,23 @@ function Folders(props) {
       </Row>
       <Row hidden={hiddenList}>
         {list.map((row, index) => (
-          <Col key={index}>{row.hash}</Col>
+          <Row className="pt-2" key={index} onClick={(ev)=>{
+            self.clickFolder(row.hash);
+          }}>
+            <Col xs={12} sm={12} md={12}>
+              {row.hash}
+            </Col>
+            <Col xs={12} sm={12} md={12}>
+              {"Files count;"}
+            </Col>
+            <Col xs={12} sm={12} md={12}>
+              {"Expire time:"}
+            </Col>
+            <Col xs={12} sm={12} md={12}>
+              <hr/>
+            </Col>
+          </Row>
+          
         ))}
       </Row>
     </Container>
