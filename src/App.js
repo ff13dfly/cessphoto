@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Nav from "./components/header";
 import Page from "./components/page";
 import Toolbar from "./components/toolbar";
+import Loading from "./components/loading";
 
 function App() {
 
@@ -11,11 +12,20 @@ function App() {
 
   //1.control the whole action here.
   const self={
-    page:(ctx,action)=>{
+    page:(ctx,action,force)=>{
       if(ctx==="home"){
-        setContent(<Page page={self.page}/>);
-        setHome(true);
-        setWay("file");
+        if(force){
+          setContent(<Loading />);
+          setTimeout(()=>{
+            setContent(<Page page={self.page}/>);
+            setHome(true);
+            setWay("file");
+          },500);
+        }else{
+          setContent(<Page page={self.page}/>);
+          setHome(true);
+          setWay("file");
+        }
       }else{
         setContent(ctx);
         setHome(false);

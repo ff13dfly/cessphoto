@@ -57,7 +57,7 @@ function Page(props) {
       </Row>
       <Row hidden={hiddenList}>
         {list.map((row, index) => (
-          <Thumb key={index} data={row} page={props.page} />
+          <Thumb key={index} data={row} page={props.page}/>
         ))}
       </Row>
     </Container>

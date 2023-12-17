@@ -28,6 +28,14 @@ function Folders(props) {
     click:(hash)=>{
       console.log(`Ready to get file by hash ( ${hash} ) .`);
     },
+    clickRemove:(hash)=>{
+      console.log(`Ready to remove bucket by hash ( ${hash} ) .`);
+      self.entry();
+    },
+    clickFresh:(hash)=>{
+      console.log(`Ready to fresh bucket by hash ( ${hash} ) .`);
+      self.entry();
+    },
     update:()=>{
 
     },
@@ -41,28 +49,29 @@ function Folders(props) {
         return list;
       }
     },
+    entry:()=>{
+      const nlist=[
+        {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
+        {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
+        {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
+        {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
+        //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+        //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+        //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
+      ]
+      if(nlist.length===0){
+  
+      }else{
+        setHiddenInfo(true);
+        setHiddenList(false);
+        setList(nlist);
+      }
+      
+    },
   }
 
   useEffect(() => {
-    //const nlist=self.getList();
-
-    const nlist=[
-      {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
-      {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
-      {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
-      {hash:tools.char(32),icon:"logo512.png",update:tools.stamp()},
-      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-      //{hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
-    ]
-    if(nlist.length===0){
-
-    }else{
-      setHiddenInfo(true);
-      setHiddenList(false);
-      setList(nlist);
-    }
-    
+    self.entry();
   }, []);
 
   return (
@@ -74,17 +83,31 @@ function Folders(props) {
       </Row>
       <Row hidden={hiddenList}>
         {list.map((row, index) => (
-          <Row className="pt-2" key={index} onClick={(ev)=>{
-            self.clickFolder(row.hash);
-          }}>
-            <Col xs={12} sm={12} md={12}>
+          <Row className="pt-2" key={index}>
+            <Col xs={12} sm={12} md={12} onClick={(ev)=>{
+              self.clickFolder(row.hash);
+            }}> 
               {row.hash}
             </Col>
-            <Col xs={12} sm={12} md={12}>
+            <Col xs={12} sm={12} md={12} onClick={(ev)=>{
+              self.clickFolder(row.hash);
+            }}> 
               {"Files count;"}
             </Col>
-            <Col xs={12} sm={12} md={12}>
+            <Col xs={12} sm={12} md={12} onClick={(ev)=>{
+              self.clickFolder(row.hash);
+            }}> 
               {"Expire time:"}
+            </Col>
+            <Col className="pt-1" xs={6} sm={6} md={6}>
+              <button className="btn btn-sm btn-danger" onClick={(ev)=>{
+                self.clickRemove(row.hash);
+              }}>Remove</button>
+            </Col>
+            <Col className="pt-1 text-end" xs={6} sm={6} md={6}>
+              <button className="btn btn-sm btn-primary" onClick={(ev)=>{
+                self.clickFresh(row.hash);
+              }}>Fresh</button>
             </Col>
             <Col xs={12} sm={12} md={12}>
               <hr/>
