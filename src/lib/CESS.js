@@ -1,5 +1,6 @@
 let URI="";
-
+//Document URL
+//https://docs.cess.cloud/deoss/get-started/js-sdk/file-operation
 const test={
     folder:()=>{
         /**************************************************/
@@ -54,7 +55,7 @@ const test={
         const { mnemonic, addr } = wellKnownAcct;
         const accountId32=addr;
 
-        console.log(accountId32); 
+        //console.log(wellKnownAcct); 
 
         InitAPI(testnetConfig).then(({api, keyring })=>{
             // const oss = new Bucket(api, keyring, true);
@@ -69,17 +70,25 @@ const test={
             //     console.log(err);
             // })
 
+            
             const folder="test";
             //const fss = new File(api, keyring,testnetConfig.gatewayURL, true);
             const fss = new File(api, keyring);
             const target="index.css";
             console.log(wellKnownAcct);
-            console.log(testnetConfig);
-            fss.uploadFile(mnemonic, accountId32,target, folder).then((res)=>{
+            console.log(accountId32);
+            //unbelievable, the paramters is as this, but the sample is 
+            //await oss.uploadFile(mnemonic, accountId32, LICENSE_PATH, bucketName);
+            fss.uploadFile(accountId32,accountId32,target, folder).then((res)=>{
                 console.log(res);
             }).catch((err)=>{
                 console.log(err);
             });
+
+            // fss.queryFileListFull(accountId32).then((res)=>{
+            //     console.log(res);
+            // });
+
 
             // const fileHash="eb46b512283bdbe28108da479497d51b71ed8fc159f953bb9353338849b8f4b9";
             // fss.queryFileMetadata(fileHash).then((res)=>{
@@ -132,6 +141,17 @@ const CESS={
         delete:(folder,pair)=>{
 
         }
+    },
+    file:{
+        list:(pair)=>{
+
+        },
+        upload:()=>{
+
+        },
+        view:(hash,pair)=>{
+
+        },
     }
 }
 
