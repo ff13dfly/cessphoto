@@ -44,9 +44,10 @@ const CESS = {
     },
 
     //get the target file by hash
-    view: async (hash, filename) => {
-        const oss = new Bucket(api, keyring, true);
+    download: async (hash, filename) => {
+        const oss = new File(api, keyring, testnetConfig.gatewayURL);
         const result = await oss.downloadFile(hash, filename);
+        console.log(result.msg === "ok" ? result.data : result);
     },
 
     //upload new image file to bucket

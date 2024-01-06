@@ -1,9 +1,11 @@
 import { Col, Container, Image, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { FileIcon } from 'react-file-icon';
 
 import CESS from "../lib/CESS";
+import Loading from "./loading";
 
-function Photos({ bucketName, objectList }) {
+function Photos({ bucketName }) {
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
@@ -18,11 +20,18 @@ function Photos({ bucketName, objectList }) {
   return (
     <Container>
       <h1 className="text-center">Bucket: {bucketName}</h1>
-      {photos && photos.map((item, idx) => (
-        <div key={idx} className="text-center">
-          <h6>{item.fileName}</h6>
-        </div>
-      ))}
+      <Row>
+        {photos.length > 0 ? photos.map((item, idx) => (
+          <Col key={idx} className="text-center" onClick={async () => {
+            alert("Downloading started...");
+            await CESS.download(item.fileHash, item.fileName);
+            alert("Download completed.");
+          }}>
+            <FileIcon extension={item.fileName.split('.').pop()} />
+            <h6>{item.fileName}</h6>
+          </Col>
+        )) : <Loading />}
+      </Row>
     </Container>
   )
 }
