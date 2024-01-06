@@ -1,155 +1,80 @@
-let URI="";
-//Document URL
-//https://docs.cess.cloud/deoss/get-started/js-sdk/file-operation
-const test={
-    folder:()=>{
-        /**************************************************/
-        /******************** Overview ********************/
-        /**************************************************/
-        // space.userOwnedSpace(accountId32).then((res)=>{
-        //     console.log(res);
-        // })
+function getDataIfOk(result) {
+    return result.msg === "ok" ? result.data : result;
+}
 
-        const { Bucket,Space, InitAPI, Common,File,testnetConfig,wellKnownAcct } = require("cess-js-sdk");
-        const mnemonic ="denial empower wear venue distance leopard lamp source off other twelve permit";
-        const accountId32 = "cXh5StobuVP4B7mGH9xn8dSsDtXks4qLAou8ZdkZ6DbB6zzxe";
-        InitAPI().then(({ api, keyring })=>{
-            const space = new Space(api, keyring, true);
-            const oss = new Bucket(api, keyring, true);
-            const common = new Common(api, keyring, true);
-            /**************************************************/
-            /******************* Bucket APIs ******************/
-            /**************************************************/
-            // oss.queryBucketList(accountId32).then((res)=>{
-            //     console.log(res);
-            // });
+const { Bucket, Space, InitAPI, Common, File, testnetConfig, wellKnownAcct } = require("cess-js-sdk");
+const mnemonic = "denial empower wear venue distance leopard lamp source off other twelve permit";
+const accountId32 = "cXh5StobuVP4B7mGH9xn8dSsDtXks4qLAou8ZdkZ6DbB6zzxe";
+testnetConfig.nodeURL = "wss://testnet-rpc2.cess.cloud/ws/";
+const { api, keyring } = await InitAPI();
 
-            const folder="folder_test_file";
-            oss.createBucket(mnemonic, accountId32, folder).then((res)=>{
-                console.log(res);
-                oss.queryBucketList(accountId32).then((res)=>{
-                    console.log(res);
-                });
-            }).catch((err)=>{
-                console.log(err);
-            })
-
-            // oss.queryBucketInfo(accountId32, folder).then((res)=>{
-            //     console.log(res);
-            // }).catch((err)=>{
-            //     console.log(err);
-            // })
-            
-            // oss.deleteBucket(mnemonic, accountId32, folder).then((res)=>{
-            //     console.log(res);
-            // }).catch((err)=>{
-            //     console.log(err);
-            // })
-        });
-    },
-    file:()=>{
-        /**************************************************/
-        /******************* Files APIs *******************/
-        /**************************************************/
-        const { InitAPI,Authorize,Bucket,File,testnetConfig,wellKnownAcct } = require("cess-js-sdk");
-        const { mnemonic, addr } = wellKnownAcct;
-        const accountId32=addr;
-
-        //console.log(wellKnownAcct); 
-
-        InitAPI(testnetConfig).then(({api, keyring })=>{
-            // const oss = new Bucket(api, keyring, true);
-
-            // const folder="folder_test_file";
-            // oss.createBucket(mnemonic, accountId32, folder).then((res)=>{
-            //     console.log(res);
-            //     oss.queryBucketList(accountId32).then((res)=>{
-            //         console.log(res);
-            //     });
-            // }).catch((err)=>{
-            //     console.log(err);
-            // })
-
-            
-            const folder="test";
-            //const fss = new File(api, keyring,testnetConfig.gatewayURL, true);
-            const fss = new File(api, keyring);
-            const target="index.css";
-            console.log(wellKnownAcct);
-            console.log(accountId32);
-            //unbelievable, the paramters is as this, but the sample is 
-            //await oss.uploadFile(mnemonic, accountId32, LICENSE_PATH, bucketName);
-            fss.uploadFile(accountId32,accountId32,target, folder).then((res)=>{
-                console.log(res);
-            }).catch((err)=>{
-                console.log(err);
-            });
-
-            // fss.queryFileListFull(accountId32).then((res)=>{
-            //     console.log(res);
-            // });
-
-
-            // const fileHash="eb46b512283bdbe28108da479497d51b71ed8fc159f953bb9353338849b8f4b9";
-            // fss.queryFileMetadata(fileHash).then((res)=>{
-            //     console.log(res);
-            // }).catch((err)=>{
-            //     console.log(err);
-            // });
-
-            // const ass=new Authorize(api, keyring);
-            // oss.authorize(mnemonic, gatewayAddr);
-        }).catch(()=>{
-
-        });
+const CESS = {
+    // Query bucket list
+    overview: async () => {
+        const oss = new Bucket(api, keyring, true);
         
-    }
-};
-
-const CESS={
-    setGateway:(gateway_uri)=>{
-        URI=gateway_uri;
+        console.log("queryBucketList:");
+        let bucketList = await oss.queryBucketList(accountId32).then((res) => {
+            console.log(getDataIfOk(res));
+            return getDataIfOk(res);
+        });
+        return bucketList;
+        /*
+        [
+            {
+                "objectList": [
+                    "f1e3ff049a01e356cc3f03d821c2ff60da5db54d2e0b3490fd1e59c57cfdfad8"
+                ],
+                "key": "test1-1"
+            },
+            {
+                "objectList": [],
+                "key": "test3-31"
+            },
+        ]
+        */
     },
-    overview:(pair)=>{
-        test.file();
-    },
 
-    //list images from folder
-    list:(folder,page,pair)=>{
-
+    // list images from bucket
+    list: async (bucketName) => {
+        const oss = new File(api, keyring, testnetConfig.gatewayURL);
+        let result = await oss.queryFileListFull(accountId32);
+        result = getDataIfOk(result);
+        return result.filter((item) => item.bucketName === bucketName);
     },
 
     //get the target file by hash
-    view:(hash,pair)=>{
-
+    view: async (hash, filename) => {
+        const oss = new Bucket(api, keyring, true);
+        const result = await oss.downloadFile(hash, filename);
     },
 
     //upload new image file to bucket
-    upload:(folder,fa,pair)=>{
+    upload: (folder, fa, pair) => {
 
     },
 
     //bucket management
-    bucket:{
+    bucket: {
         //create a bucket as folder
-        create:(folder,pair)=>{
+        create: (folder, pair) => {
 
         },
-        detail:(folder,pair)=>{
+        detail: (folder, pair) => {
 
         },
-        delete:(folder,pair)=>{
+        delete: (folder, pair) => {
 
         }
     },
-    file:{
-        list:(pair)=>{
+    file: {
+        list: (pair) => {
 
         },
-        upload:()=>{
+        upload: () => {
 
         },
-        view:(hash,pair)=>{
+        view: (hash, pair) => {
 
         },
     }
