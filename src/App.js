@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Nav from "./components/header";
 import Folders from "./components/folders";
-import Toolbar from "./components/toolbar";
 import Loading from "./components/loading";
 
 function App() {
@@ -41,7 +40,6 @@ function App() {
   return (<div>
     <Nav home={home} page={self.page}/>
     {content}
-    <Toolbar way={way} page={self.page}/>
   </div>);
 }
 

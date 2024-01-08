@@ -10,7 +10,7 @@ function Folders(props) {
 
   useEffect(() => {
     const fetchBucketList = async () => {
-      const bucketList = await CESS.overview();
+      const bucketList = await CESS.listBuckets();
       setList(bucketList);
     }
     fetchBucketList();

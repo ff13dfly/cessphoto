@@ -7,10 +7,14 @@ import Loading from "./loading";
 
 function Photos({ bucketName }) {
   const [photos, setPhotos] = useState([]);
+  const [filePath, setFilePath] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchPhotos = async () => {
-      const result = await CESS.list(bucketName);
+      setIsLoading(true);
+      const result = await CESS.getBucketItems(bucketName);
+      setIsLoading(false);
       console.log(result);
       setPhotos(result);
     };
@@ -21,7 +25,21 @@ function Photos({ bucketName }) {
     <Container>
       <h1 className="text-center">Bucket: {bucketName}</h1>
       <Row>
-        {photos.length > 0 ? photos.map((item, idx) => (
+        <Col xs={8} sm={8} md={8} >
+          <input type="file" className="form-control" onChange={(event) => {
+            setFilePath(event.target.files[0].path);
+          }} />
+        </Col>
+        <Col className="text-end" xs={4} sm={4} md={4}>
+          <button className="btn btn-md btn-primary" onClick={async () => {
+            await CESS.upload(bucketName, filePath)
+          }}>
+            Upload
+          </button>
+        </Col>
+      </Row>
+      <Row>
+        {isLoading ? <Loading /> : photos.map((item, idx) => (
           <Col key={idx} className="text-center" onClick={async () => {
             alert("Downloading started...");
             await CESS.download(item.fileHash, item.fileName);
@@ -30,7 +48,8 @@ function Photos({ bucketName }) {
             <FileIcon extension={item.fileName.split('.').pop()} />
             <h6>{item.fileName}</h6>
           </Col>
-        )) : <Loading />}
+        ))
+        }
       </Row>
     </Container>
   )
