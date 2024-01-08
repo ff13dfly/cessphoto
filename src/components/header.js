@@ -1,8 +1,6 @@
 import { Navbar, Container, Row, Col } from "react-bootstrap";
-import { FaFolderOpen } from "react-icons/fa";
 import { FaRegUser } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import Folders from "./folders";
 import User from "./user";
 
 function Nav(props) {
@@ -11,9 +9,6 @@ function Nav(props) {
   const self={
     clickUser:(ev)=>{
       props.page(<User />,"user");
-    },
-    clickFolder:(ev)=>{
-      props.page(<Folders  page={props.page}/>,"folder");
     },
     clickClose:(ev)=>{
       props.page("home");
@@ -28,9 +23,6 @@ function Nav(props) {
         </Navbar.Brand>
         <Row>
           <Col className="text-end" hidden={!props.home}>
-            <FaFolderOpen size={27} onClick={(ev)=>{
-              self.clickFolder(ev);
-            }}/>
             <FaRegUser style={{marginLeft:"20px"}} size={27} onClick={(ev)=>{
               self.clickUser(ev);
             }}/>

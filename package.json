@@ -2,6 +2,7 @@
   "name": "cess",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@polkadot/extension-dapp": "^0.46.6",
     "@polkadot/keyring": "^12.6.2",
