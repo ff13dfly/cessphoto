@@ -89,10 +89,10 @@ const CESS = {
     },
 
     //upload new image file to bucket
-    upload: async (bucketName, filePath) => {
+    upload: async (bucketName, file) => {
         const addr = await CESS.getAddress();
         const oss = new File(api, keyring, testnetConfig.gatewayURL);
-        const result = await oss.uploadFile(addr, addr, filePath, bucketName);
+        const result = await oss.uploadFile(addr, addr, file, bucketName);
         console.log(getDataIfOk(result));
     },
 }

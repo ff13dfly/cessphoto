@@ -7,19 +7,25 @@ import Loading from "./loading";
 
 function Photos({ bucketName }) {
   const [photos, setPhotos] = useState([]);
-  const [filePath, setFilePath] = useState();
+  const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchPhotos = async () => {
-      setIsLoading(true);
       const result = await CESS.getBucketItems(bucketName);
       setIsLoading(false);
       console.log(result);
       setPhotos(result);
     };
-    fetchPhotos();
-  }, [bucketName]);
+    if (isLoading) {
+      fetchPhotos();
+    }
+  }, [bucketName, isLoading]);
+
+  const isImage = (fileName) => {
+    const extension = fileName.split('.').pop();
+    return ['jpg', 'jpeg', 'png', 'gif'].includes(extension);
+  }
 
   return (
     <Container>
@@ -27,12 +33,15 @@ function Photos({ bucketName }) {
       <Row>
         <Col xs={8} sm={8} md={8} >
           <input type="file" className="form-control" onChange={(event) => {
-            setFilePath(event.target.files[0].path);
+            setFile(event.target.files[0]);
           }} />
         </Col>
         <Col className="text-end" xs={4} sm={4} md={4}>
           <button className="btn btn-md btn-primary" onClick={async () => {
-            await CESS.upload(bucketName, filePath)
+            alert("Uploading...");
+            await CESS.upload(bucketName, file);
+            alert("Upload completed.");
+            setIsLoading(true);
           }}>
             Upload
           </button>
@@ -45,7 +54,12 @@ function Photos({ bucketName }) {
             await CESS.download(item.fileHash, item.fileName);
             alert("Download completed.");
           }}>
-            <FileIcon extension={item.fileName.split('.').pop()} />
+            {
+              isImage(item.fileName) ?
+                <Image src={`https://d.cess.cloud/${item.fileHash}`} />
+                :
+                <FileIcon extension={item.fileName.split('.').pop()} />
+            }
             <h6>{item.fileName}</h6>
           </Col>
         ))
