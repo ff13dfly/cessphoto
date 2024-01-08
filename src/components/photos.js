@@ -1,4 +1,4 @@
-import { Col, Container, Image, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { FileIcon } from 'react-file-icon';
 
@@ -22,11 +22,6 @@ function Photos({ bucketName }) {
     }
   }, [bucketName, isLoading]);
 
-  const isImage = (fileName) => {
-    const extension = fileName.split('.').pop();
-    return ['jpg', 'jpeg', 'png', 'gif'].includes(extension);
-  }
-
   return (
     <Container>
       <h1 className="text-center">Bucket: {bucketName}</h1>
@@ -47,19 +42,14 @@ function Photos({ bucketName }) {
           </button>
         </Col>
       </Row>
-      <Row>
+      <Row style={{ marginTop: '24px' }}>
         {isLoading ? <Loading /> : photos.map((item, idx) => (
           <Col key={idx} className="text-center" onClick={async () => {
             alert("Downloading started...");
             await CESS.download(item.fileHash, item.fileName);
             alert("Download completed.");
           }}>
-            {
-              isImage(item.fileName) ?
-                <Image src={`https://d.cess.cloud/${item.fileHash}`} />
-                :
-                <FileIcon extension={item.fileName.split('.').pop()} />
-            }
+            <FileIcon extension={item.fileName.split('.').pop()} />
             <h6>{item.fileName}</h6>
           </Col>
         ))
