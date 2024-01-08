@@ -33,7 +33,6 @@ function Photos({ bucketName }) {
         </Col>
         <Col className="text-end" xs={4} sm={4} md={4}>
           <button className="btn btn-md btn-primary" onClick={async () => {
-            alert("Uploading...");
             await CESS.upload(bucketName, file);
             alert("Upload completed.");
             setIsLoading(true);
@@ -45,7 +44,6 @@ function Photos({ bucketName }) {
       <Row style={{ marginTop: '24px' }}>
         {isLoading ? <Loading /> : photos.map((item, idx) => (
           <Col key={idx} className="text-center" onClick={async () => {
-            alert("Downloading started...");
             await CESS.download(item.fileHash, item.fileName);
             alert("Download completed.");
           }}>

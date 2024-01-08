@@ -16,7 +16,7 @@ const CESS = {
         if (extensions.length === 0) {
             // no extension installed, or the user did not accept the authorization
             // in this case we should inform the use and give a link to the extension
-            alert("Please install Polkadot.js Extension");
+            alert("Please install Wallet Extension: Subwallet/Polkadot.js");
             return wellKnownAcct.addr;
         }
 
@@ -44,6 +44,13 @@ const CESS = {
         result["address"] = addr;
         console.log(result);
         return result;
+    },
+
+    createBucket: async (bucketName) => {
+        const addr = await CESS.getAddress();
+        const oss = new Bucket(api, keyring, true);
+        const result = await oss.createBucket(addr, addr, bucketName);
+        console.log(getDataIfOk(result), "\n");
     },
 
     // Query bucket list
@@ -91,9 +98,9 @@ const CESS = {
     //upload new image file to bucket
     upload: async (bucketName, file) => {
         const addr = await CESS.getAddress();
+        console.log(testnetConfig.gatewayURL);
         const oss = new File(api, keyring, testnetConfig.gatewayURL);
         const result = await oss.uploadFile(addr, addr, file, bucketName);
-        console.log(getDataIfOk(result));
     },
 }
 
